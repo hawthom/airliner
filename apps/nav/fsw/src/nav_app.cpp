@@ -2004,9 +2004,9 @@ void NAV::ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *PosSetpoin
                 PosSetpoint->Type = PX4_SetpointType_t::PX4_SETPOINT_TYPE_POSITION;
                 break;
             }
-            
-            PosSetpoint->Valid = TRUE;
         }
+
+        PosSetpoint->Valid = TRUE;
     }
 }
 

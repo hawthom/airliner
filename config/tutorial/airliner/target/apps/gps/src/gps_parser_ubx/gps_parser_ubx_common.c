@@ -307,6 +307,7 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                             GPS_Parser_Reset();
                         }
                     }
+                    break;
                 }
 
                 case GPS_PARSER_CLASS_INF_VALUE:
@@ -1241,6 +1242,7 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                 default:
                     break;
             }
+            break;
         }
         case GPS_PARSER_CLASS_CFG_VALUE:
         {
@@ -1377,6 +1379,7 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                 default:
                     break;
             }
+            break;
         }
         case GPS_PARSER_CLASS_UPD_VALUE:
         case GPS_PARSER_CLASS_MON_VALUE:

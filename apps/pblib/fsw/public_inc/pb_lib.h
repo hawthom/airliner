@@ -48,6 +48,7 @@
 *************************************************************************/
 #define PBLIB_REG_MAX_ENTRY  (100)
 #define PBLIB_REGTBL_MUTEX_NAME ("PBLIB_REGTBL_MUTEX")
+#define PBLIB_FUNC_NAME_LENGTH_MAX (64)
 
 /************************************************************************
 ** Local Structure Definitions
@@ -62,7 +63,7 @@ typedef struct
 	CFE_SB_MsgId_t 	msgId;
 
 	/** \brief Name of serialized message data type */
-	char			msgName[CFE_SB_MAX_SB_MSG_SIZE];
+	char			msgName[PBLIB_FUNC_NAME_LENGTH_MAX];
 
 	/** \brief Command code for serialized message */
     uint16	 		cmdCode;

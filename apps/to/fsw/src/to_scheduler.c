@@ -65,7 +65,7 @@ void TO_Scheduler_Run(TO_ChannelData_t *channel)
 					if(iStatus == OS_SUCCESS)
 					{
 						channel->DumpTbl.PriorityQueue[i].CurrentlyQueuedCnt--;
-						iStatus == TO_OutputQueue_QueueMsg(channel, buffer);
+						iStatus = TO_OutputQueue_QueueMsg(channel, buffer);
 		            	if(iStatus == CFE_SUCCESS)
 		            	{
 		            		oqueue->CurrentlyQueuedCnt++;

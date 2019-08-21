@@ -541,7 +541,7 @@ boolean RGBLED_Custom_Uninit(void)
     }
     else
     {
-        RGBLED_AppCustomData.Status == RGBLED_CUSTOM_INITIALIZED;
+        RGBLED_AppCustomData.Status = RGBLED_CUSTOM_INITIALIZED;
     }
 
     returnCode = close(RGBLED_AppCustomData.DeviceFd);

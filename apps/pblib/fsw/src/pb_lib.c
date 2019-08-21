@@ -475,7 +475,7 @@ PBLIB_GetCmdSerializationFunc_Exit_Tag:
 PBLib_EncodeFuncPtr_t PBLIB_GetTlmSerializationFunc(CFE_SB_MsgId_t msgId)
 {
 	PBLib_EncodeFuncPtr_t funcAddr = 0;
-	char encFuncName[64];
+	char encFuncName[PBLIB_FUNC_NAME_LENGTH_MAX];
 	int32 status = 0;
     int32 i = 0;
 
