@@ -92,7 +92,16 @@ RUN \
   apt-get install -y default-jre && \
   apt-get install -y default-jdk && \
   apt-get install -y python3-pip && \
+  apt-get install -y openssh-server && \
   rm -rf /var/lib/apt/lists/*
+
+# ssh setup
+RUN mkdir /var/run/sshd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN ssh-keygen -A
+
+# Set root password
+RUN echo 'root:root' | chpasswd
 
 # Install npm packages
 #RUN \
@@ -120,14 +129,17 @@ RUN \
   cd /airliner/build/typhoon_h480/sitl && \
   make ground_tools
 
-# Expose commander port
-EXPOSE 3000/udp
+# Expose commander port and ssh port
+EXPOSE 3000/udp 22
 
 # Set environment variables.
 ENV HOME /root
 
 # Define working directory.
 WORKDIR /root
+
+# Start ssh
+CMD ["/usr/sbin/sshd", "-D"]
 
 # Define default command.
 CMD ["bash"]
