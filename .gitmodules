@@ -7,3 +7,6 @@
 [submodule "tools/jmavsim"]
 	path = tools/jmavsim
 	url = https://github.com/WindhoverLabs/jMAVSim.git
+[submodule "core/cfe/fsw-private"]
+	path = core/cfe/fsw-private
+	url = git@github.com:WindhoverLabs/cfe-whl.git
