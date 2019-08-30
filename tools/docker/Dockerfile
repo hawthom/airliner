@@ -88,20 +88,35 @@ RUN \
   apt-get install -y lcov && \
   apt-get install -y xsltproc && \
   # apt-get install -y npm && \
+  apt-get install -y supervisor && \
   apt-get install -y nodejs && \
   apt-get install -y default-jre && \
   apt-get install -y default-jdk && \
   apt-get install -y python3-pip && \
   apt-get install -y openssh-server && \
+  apt-get install -y xauth && \
+  apt-get install -y sudo && \
   rm -rf /var/lib/apt/lists/*
 
 # ssh setup
 RUN mkdir /var/run/sshd
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config
+RUN sed -i 's/#PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 RUN ssh-keygen -A
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN \
+  mkdir /root/.ssh && \
+  chmod 700 /root/.ssh && \
+  ssh-keygen -A && \
+  
 
 # Set root password
 RUN echo 'root:root' | chpasswd
+
+# Add user
+RUN useradd airliner && \
+  echo 'airliner:airliner' | chpasswd && \
+  usermod -aG airliner  
 
 # Install npm packages
 #RUN \
@@ -134,12 +149,13 @@ EXPOSE 3000/udp 22
 
 # Set environment variables.
 ENV HOME /root
+ENV LC_ALL=C; unset LANGUAGE
 
 # Define working directory.
 WORKDIR /root
 
 # Start ssh
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/usr/bin/supervisord"]
 
 # Define default command.
 CMD ["bash"]
