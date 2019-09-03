@@ -102,21 +102,23 @@ RUN \
 RUN mkdir /var/run/sshd
 RUN sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+RUN sed -i "s/^.*X11UseLocalhost.*$/X11UseLocalhost no/" /etc/ssh/sshd_config 
+RUN grep "^X11UseLocalhost" /etc/ssh/sshd_config || echo "X11UseLocalhost no" >> /etc/ssh/sshd_config
 RUN ssh-keygen -A
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN \
   mkdir /root/.ssh && \
   chmod 700 /root/.ssh && \
-  ssh-keygen -A && \
+  ssh-keygen -A
   
 
 # Set root password
 RUN echo 'root:root' | chpasswd
 
 # Add user
-RUN useradd airliner && \
-  echo 'airliner:airliner' | chpasswd && \
-  usermod -aG airliner  
+RUN useradd -ms /bin/bash docker && \
+  echo 'docker:docker' | chpasswd && \
+  adduser docker sudo  
 
 # Install npm packages
 #RUN \
@@ -126,30 +128,33 @@ RUN useradd airliner && \
 #RUN n 6
 
 # Pull down repos
-RUN \
-  git clone https://github.com/WindhoverLabs/airliner.git
+#RUN \
+#  git clone https://github.com/WindhoverLabs/airliner.git
 
 # Install commander packages
-RUN \
-  cd /airliner/tools/commander && \
-  npm install
+#RUN \
+#  cd /airliner/tools/commander && \
+#  npm install
 
 # Build sitl flight software
-RUN \
-  cd /airliner && \
-  make typhoon_h480/sitl
+#RUN \
+#  cd /airliner && \
+#  make typhoon_h480/sitl
 
 # Make ground tools
-RUN \
-  cd /airliner/build/typhoon_h480/sitl && \
-  make ground_tools
+#RUN \
+#  cd /airliner/build/typhoon_h480/sitl && \
+#  make ground_tools
 
 # Expose commander port and ssh port
 EXPOSE 3000/udp 22
 
 # Set environment variables.
 ENV HOME /root
-ENV LC_ALL=C; unset LANGUAGE
+
+# Set environment for user.
+COPY bashrc /home/docker/.bashrc
+COPY bash_profile /home/docker/.bash_profile
 
 # Define working directory.
 WORKDIR /root
@@ -158,4 +163,4 @@ WORKDIR /root
 CMD ["/usr/bin/supervisord"]
 
 # Define default command.
-CMD ["bash"]
+#CMD ["bash"]
