@@ -52,7 +52,7 @@
 /* 
 ** These defines are for OS_printf
 */
-#define OS_BUFFER_SIZE 4000
+#define OS_BUFFER_SIZE      512
 #define OS_BUFFER_MSG_DEPTH 100
 
 /* This #define turns on a utility task that
